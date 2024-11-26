@@ -89,5 +89,31 @@ def add_book():
     return render_template('add_book.html', authors=authors)
 
 
+@app.route('/')
+@app.route('/home')
+def home():
+    # Capture sort parameter
+    sort_by = request.args.get('sort_by', 'title')
+
+    # Apply sorting logic
+    if sort_by == 'author':
+        books = Book.query.join(Author).order_by(Author.name).all()
+    else:  # Default sorting is by title
+        books = Book.query.join(Author).order_by(Book.title).all()
+
+    # Prepare data for the template
+    books_data = [
+        {
+            "title": book.title,
+            "author": book.author.name,
+            "isbn": book.isbn,
+            "publication_year": book.publication_year,
+        }
+        for book in books
+    ]
+
+    return render_template('home.html', books=books_data)
+
+
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
