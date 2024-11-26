@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from sqlalchemy.orm.exc import NoResultFound
 from data import PATH  # Import the database path
 from data_models import db, Author, Book
 from validation import validate_author_data, validate_book_data
@@ -92,14 +91,30 @@ def add_book():
 @app.route('/')
 @app.route('/home')
 def home():
-    # Capture sort parameter
+    # Capture query parameter
     sort_by = request.args.get('sort_by', 'title')
+    search_query = request.args.get('search_query', '')
 
-    # Apply sorting logic
+    # Base query
+    query = Book.query.join(Author)
+
+    # Add search filter if a query exists
+    if search_query:
+        search_filter = (Book.title.ilike(f"%{search_query}%") |
+                         Author.name.ilike(f"%{search_query}%"))
+        query = query.filter(search_filter)
+
+    # Add sorting
     if sort_by == 'author':
-        books = Book.query.join(Author).order_by(Author.name).all()
+        query = query.order_by(Author.name)
     else:  # Default sorting is by title
-        books = Book.query.join(Author).order_by(Book.title).all()
+        query = query.order_by(Book.title)
+
+    books = query.all()
+
+    # Flash a message if no books match the search criteria
+    if not books and search_query:
+        flash("No books match the search criteria.", "warning")
 
     # Prepare data for the template
     books_data = [

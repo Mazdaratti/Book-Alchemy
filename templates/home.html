@@ -14,6 +14,26 @@
 <body>
     <h1>Welcome to the Library</h1>
 
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <ul class="flash-messages">
+                {% for category, message in messages %}
+                    <li class="{{ category }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Search Form -->
+    <div class="search-bar">
+        <form method="GET" action="/home">
+            <label for="search_query">Search:</label>
+            <input type="text" id="search_query" name="search_query" placeholder="Enter a keyword...">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <!-- Sorting Controls -->
     <div class="controls">
         <form method="GET" action="/home">
@@ -28,14 +48,14 @@
 
     <!-- Book Listings -->
     {% for book in books %}
-        <div class="book">
-            <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Book Cover">
-            <div>
-                <strong>{{ book.title }}</strong> by {{ book.author }}
-                <br>
-                <em>Published in {{ book.publication_year }}</em>
+            <div class="book">
+                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Book Cover">
+                <div>
+                    <strong>{{ book.title }}</strong> by {{ book.author }}
+                    <br>
+                    <em>Published in {{ book.publication_year }}</em>
+                </div>
             </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
 </body>
 </html>
