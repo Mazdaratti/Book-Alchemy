@@ -1,16 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  </head>
-  <body>
+    <title>Library Home</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .book { margin-bottom: 20px; }
+        img { max-width: 100px; margin-right: 10px; }
+        .controls { margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Library</h1>
 
-    {% for book in books %}
-    <div> <h3>{{ book.title }}</h3>
+    <!-- Sorting Controls -->
+    <div class="controls">
+        <form method="GET" action="/home">
+            <label for="sort_by">Sort by:</label>
+            <select name="sort_by" id="sort_by">
+                <option value="title">Title</option>
+                <option value="author">Author</option>
+            </select>
+            <button type="submit">Sort</button>
+        </form>
     </div>
-    {% endfor %}
 
-  </body>
+    <!-- Book Listings -->
+    {% for book in books %}
+        <div class="book">
+            <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Book Cover">
+            <div>
+                <strong>{{ book.title }}</strong> by {{ book.author }}
+                <br>
+                <em>Published in {{ book.publication_year }}</em>
+            </div>
+        </div>
+    {% endfor %}
+</body>
 </html>
