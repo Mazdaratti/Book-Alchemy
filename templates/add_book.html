@@ -4,12 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Book</title>
   </head>
   <body>
 
-  <form action="/add_author" method="POST">
-  <!-- Add the form here -->
+  <h1>Add a New Book</h1>
+
+  <!-- Display Flash Messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <ul>
+        {% for category, message in messages %}
+          <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form action="/add_book" method="POST">
+    <label for="title">Book Title:</label>
+    <input type="text" id="title" name="title" required><br><br>
+
+    <label for="isbn">ISBN:</label>
+    <input type="text" id="isbn" name="isbn" required><br><br>
+
+    <label for="publication_year">Publication Year:</label>
+    <input type="number" id="publication_year" name="publication_year"><br><br>
+
+    <label for="author_id">Select Author:</label>
+    <select name="author_id" id="author_id" required>
+      <option value="" disabled selected>Select an Author</option>
+      {% for author in authors %}
+        <option value="{{ author.id }}">{{ author.name }}</option>
+      {% endfor %}
+    </select><br><br>
+
+    <input type="submit" value="Add Book">
   </form>
 
   </body>
+</html>
 </html>
