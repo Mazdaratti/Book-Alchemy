@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
+from sqlalchemy.orm.exc import NoResultFound
 from data import PATH  # Import the database path
 from data_models import db, Author, Book
-from validation import validate_author_data
+from validation import validate_author_data, validate_book_data
 
 # Initialize the Flask application
 app = Flask(__name__)
@@ -48,6 +49,44 @@ def add_author():
 
     # For GET request, just render the form
     return render_template('add_author.html')
+
+
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book():
+    if request.method == 'POST':
+        form_data = request.form.to_dict()  # Capture form data
+
+        # Call validation function
+        errors, validated_data = validate_book_data(form_data)
+
+        # If there are errors, flash them and re-render the form
+        if errors:
+            for error in errors:
+                flash(error, "error")
+        else:
+            # If no errors, proceed to create the new book
+            try:
+                # Fetch the selected author from the database by ID
+                author_id = validated_data['author_id']
+                author = Author.query.get(author_id)
+
+                new_book = Book(
+                    title=validated_data['title'],
+                    isbn=validated_data['isbn'],
+                    publication_year=validated_data['publication_year'],
+                    author_id=author.id  # Associate the book with the selected author
+                )
+                db.session.add(new_book)
+                db.session.commit()
+                flash("Book added successfully!", "success")
+            except Exception as e:
+                flash(f"An unexpected error occurred: {str(e)}", "error")
+
+        return redirect(url_for('add_book'))
+
+    # For GET request, just render the form
+    authors = Author.query.all()  # Get all authors from the database
+    return render_template('add_book.html', authors=authors)
 
 
 if __name__ == '__main__':
