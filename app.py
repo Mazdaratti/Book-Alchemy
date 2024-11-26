@@ -3,7 +3,6 @@ from flask_sqlalchemy import SQLAlchemy
 from data import PATH  # Import the database path
 from data_models import db, Author, Book
 
-
 # Initialize the Flask application
 app = Flask(__name__)
 
@@ -14,12 +13,16 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize SQLAlchemy
 db.init_app(app)
 
+# Create the database tables. Run once
+#with app.app_context():
+    #db.create_all()
+    #print("Tables created successfully!")
+
 
 # Testing setup
 @app.route('/')
 def home():
     return "Library app is connected to the database!"
-
 
 
 if __name__ == '__main__':
