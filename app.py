@@ -116,18 +116,39 @@ def home():
     if not books and search_query:
         flash("No books match the search criteria.", "warning")
 
-    # Prepare data for the template
-    books_data = [
-        {
-            "title": book.title,
-            "author": book.author.name,
-            "isbn": book.isbn,
-            "publication_year": book.publication_year,
-        }
-        for book in books
-    ]
+    return render_template('home.html', books=books)
 
-    return render_template('home.html', books=books_data)
+
+@app.route('/book/<int:book_id>/delete', methods=['POST'])
+def delete_book(book_id):
+    try:
+        # Find the book by ID
+        book = Book.query.get(book_id)
+        if not book:
+            flash("Book not found.", "error")
+            return redirect(url_for('home'))
+
+        # Find the author
+        author = book.author
+
+        # Delete the book
+        db.session.delete(book)
+        db.session.commit()
+
+        # Check if the author has any remaining books
+        remaining_books = Book.query.filter_by(author_id=author.id).count()
+        if remaining_books == 0:
+            db.session.delete(author)
+            db.session.commit()
+            flash(f"Book and its author '{author.name}' have been deleted.", "success")
+        else:
+            flash("Book has been deleted.", "success")
+
+    except Exception as e:
+        db.session.rollback()
+        flash(f"An error occurred while deleting the book: {str(e)}", "error")
+
+    return redirect(url_for('home'))
 
 
 if __name__ == '__main__':
