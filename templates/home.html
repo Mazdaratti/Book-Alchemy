@@ -3,13 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/style.css">
     <title>Library Home</title>
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .book { margin-bottom: 20px; }
-        img { max-width: 100px; margin-right: 10px; }
-        .controls { margin-bottom: 20px; }
-    </style>
 </head>
 <body>
     <h1>Welcome to the Library</h1>
@@ -54,8 +49,13 @@
                     <strong>{{ book.title }}</strong> by {{ book.author }}
                     <br>
                     <em>Published in {{ book.publication_year }}</em>
+                    <br>
+                    <!-- Delete Book Button -->
+                    <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST" style="display:inline;">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
                 </div>
             </div>
-        {% endfor %}
+    {% endfor %}
 </body>
 </html>

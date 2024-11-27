@@ -1,0 +1,35 @@
+body {
+        font-family: Arial, sans-serif;
+      }
+
+.book {
+        margin-bottom: 20px;
+      }
+
+img {
+        max-width: 100px; margin-right: 10px;
+       }
+
+.controls {
+        margin-bottom: 20px;
+        }
+
+.delete-button {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        }
+.delete-button:hover {
+        background-color: darkred;
+        }
+
+.error {
+        color: red;
+        font-weight: bold;
+      }
+.success {
+        color: green;
+        font-weight: bold;
+      }
