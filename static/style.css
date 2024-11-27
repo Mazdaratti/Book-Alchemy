@@ -1,35 +1,137 @@
+/* Base Styling */
 body {
-        font-family: Arial, sans-serif;
-      }
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
 
-.book {
-        margin-bottom: 20px;
-      }
+h1 {
+    text-align: center;
+    color: #007bff;
+    margin: 20px 0;
+}
 
-img {
-        max-width: 100px; margin-right: 10px;
-       }
+/* Flash Messages */
+.flash-messages .alert {
+    margin: 10px auto;
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: 80%;
+    text-align: center;
+}
 
-.controls {
-        margin-bottom: 20px;
-        }
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
 
+.alert.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert.warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+/* Card Grid */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Force 4 columns on large screens */
+    gap: 20px;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Card Styling */
+.card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-top {
+    height: 150px;
+    object-fit: cover;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+}
+
+.card-body {
+    padding: 15px;
+    text-align: center;
+}
+
+.card-body h5 {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.card-body p {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Delete Button */
 .delete-button {
-        background-color: red;
-        color: white;
-        border: none;
-        padding: 5px 10px;
-        cursor: pointer;
-        }
-.delete-button:hover {
-        background-color: darkred;
-        }
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
 
-.error {
-        color: red;
-        font-weight: bold;
-      }
-.success {
-        color: green;
-        font-weight: bold;
-      }
+.delete-button:hover {
+    background-color: #b71c1c;
+}
+
+/* Search Bar */
+.search-bar {
+    text-align: center;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.search-bar input {
+    width: calc(100% - 100px);
+    padding: 10px;
+    border-radius: 20px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+.search-bar button {
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+

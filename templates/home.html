@@ -3,59 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/static/style.css">
     <title>Library Home</title>
 </head>
-<body>
-    <h1>Welcome to the Library</h1>
+<body class="bg-light">
 
-    <!-- Flash Messages -->
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul class="flash-messages">
-                {% for category, message in messages %}
-                    <li class="{{ category }}">{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    {% endwith %}
+    <div class="container my-4">
+        <h1 class="text-center text-primary">Welcome to the Library</h1>
 
-    <!-- Search Form -->
-    <div class="search-bar">
-        <form method="GET" action="/home">
-            <label for="search_query">Search:</label>
-            <input type="text" id="search_query" name="search_query" placeholder="Enter a keyword...">
-            <button type="submit">Search</button>
-        </form>
-    </div>
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <ul class="flash-messages list-unstyled">
+                    {% for category, message in messages %}
+                        <li class="alert alert-{{ category }} my-2">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
 
-    <!-- Sorting Controls -->
-    <div class="controls">
-        <form method="GET" action="/home">
-            <label for="sort_by">Sort by:</label>
-            <select name="sort_by" id="sort_by">
-                <option value="title">Title</option>
-                <option value="author">Author</option>
-            </select>
-            <button type="submit">Sort</button>
-        </form>
-    </div>
-
-    <!-- Book Listings -->
-    {% for book in books %}
-            <div class="book">
-                <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Book Cover">
-                <div>
-                    <strong>{{ book.title }}</strong> by {{ book.author }}
-                    <br>
-                    <em>Published in {{ book.publication_year }}</em>
-                    <br>
-                    <!-- Delete Book Button -->
-                    <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST" style="display:inline;">
-                        <button type="submit" class="delete-button">Delete</button>
-                    </form>
-                </div>
+        <!-- Search Form -->
+        <div class="row mb-3">
+            <div class="col-md-6 offset-md-3">
+                <form method="GET" action="/home" class="d-flex">
+                    <input
+                        type="text"
+                        id="search_query"
+                        name="search_query"
+                        class="form-control me-2"
+                        placeholder="Search books or authors..."
+                        aria-label="Search"
+                        value="{{ request.args.get('search_query', '') }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
             </div>
-    {% endfor %}
+        </div>
+
+        <!-- Sorting Controls -->
+        <div class="row mb-4">
+            <div class="col-md-6 offset-md-3">
+                <form method="GET" action="/home" class="d-flex">
+                    <label for="sort_by" class="me-2">Sort by:</label>
+                    <select name="sort_by" id="sort_by" class="form-select me-2">
+                        <option value="title">Title</option>
+                        <option value="author">Author</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Sort</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Book Listings -->
+        <div class="row row-cols-1 row-cols-md-4 g-4">
+            {% for book in books %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="https://covers.openlibrary.org/b/isbn/{{ book.isbn }}-M.jpg" alt="Book Cover" class="card-img-top">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text">by {{ book.author }}</p>
+                            <p class="card-text"><small class="text-muted">Published in {{ book.publication_year }}</small></p>
+                        </div>
+                        <div class="card-footer text-center">
+                            <!-- Delete Book Button -->
+                            <form action="{{ url_for('delete_book', book_id=book.id) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional for dropdowns, modals, etc.) -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
